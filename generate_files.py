@@ -5,7 +5,6 @@ import string
 
 def generate_random_text(words, min_length=600):
     text = " ".join(random.choices(string.ascii_letters + " ", k=min_length * 5))
-    word_positions = random.sample(range(len(text.split())), len(words))
 
     # Випадкове додавання слів з урахуванням позицій
     for word in words:
@@ -33,6 +32,6 @@ def create_files_with_random_text(num_files, directory="random_texts", words=Non
 
 
 if __name__ == "__main__":
-    num_files = 10000
+    num_files = 100000
     create_files_with_random_text(num_files)
     print(f"{num_files} files with random text have been created.")

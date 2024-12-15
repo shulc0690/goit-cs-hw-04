@@ -7,31 +7,32 @@
 3. Активуємо (відповідно до своєї ОС): `.env\Scripts\activate`
 4. Інсталюємо залежності: `pip install -r requirements.txt`
 5. По завершенню роботи деактивовуємо: `.env\Scripts\deactivate`
-6. Сгенерувати файли запустивши `generate_files.py`
+6. Сгенерувати файли для тесту:  `generate_files.py`
 
 Результат обробки файлів:
 ```bash
 Keywords to search: ['OK', 'Coca-Cola', 'CORONA']
-Count of files: 10000
+Count of files: 100000
 ================================================================================
 Search using threads:
 Number of threads: 10
 
 Search results (Threading):
-OK: found in 54712 places
-Coca-Cola: found in 54729 places
-CORONA: found in 54593 places
-Execution time (Threading): 2.4991 seconds
+OK: found in 547564 places
+Coca-Cola: found in 549446 places
+CORONA: found in 549254 places
+Execution time (Threading): 75.5222 seconds
 
 
 Keywords to search: ['OK', 'Coca-Cola', 'CORONA']
-Count of files: 10000
+Count of files: 100000
 ================================================================================
 Search using multiprocessing:
+Number of processers: 10
 
 Search results (Multiprocessing):
-OK: found in 54712 places
-Coca-Cola: found in 54729 places
-CORONA: found in 54593 places
-Execution time (Multiprocessing): 3.3873 seconds
+OK: found in 547564 places
+Coca-Cola: found in 549446 places
+CORONA: found in 549254 places
+Execution time (Multiprocessing): 2.9551 seconds
 ```

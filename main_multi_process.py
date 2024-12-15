@@ -11,7 +11,8 @@ logging.basicConfig(
 )
 
 
-def search_keywords_in_file(file_path, keywords, results):
+def search_keywords_in_file(file_path, keywords):
+    results = []
     try:
         with open(file_path, "r", encoding="utf-8") as file:
             content = file.read()
@@ -24,32 +25,18 @@ def search_keywords_in_file(file_path, keywords, results):
                     )
     except Exception as e:
         logging.error(f"Error reading {file_path}: {e}")
-
-
-def worker(file_chunk, keywords, results):
-    for file_path in file_chunk:
-        search_keywords_in_file(file_path, keywords, results)
+    return results
 
 
 def multiprocessing_search(files, keywords):
-    manager = multiprocessing.Manager()
-    results = manager.list()
-    processes = []
-
-    num_processes = min(os.cpu_count(), len(files))
-    file_chunks = [files[i::num_processes] for i in range(num_processes)]
-
-    for chunk in file_chunks:
-        p = multiprocessing.Process(target=worker, args=(chunk, keywords, results))
-        processes.append(p)
-        p.start()
-        logging.info(f"Process {p.name} started with chunk {chunk}")
-
-    for p in processes:
-        p.join()
-        logging.info(f"Process {p.name} finished")
-
-    return list(results)
+    with multiprocessing.Pool(os.cpu_count()) as pool:
+        results = pool.starmap(
+            search_keywords_in_file, [(file, keywords) for file in files]
+        )
+    flattened_results = [
+        item for sublist in results for item in sublist
+    ]  # Flatten list of lists
+    return flattened_results
 
 
 def get_files_from_directory(directory):
@@ -65,6 +52,7 @@ if __name__ == "__main__":
     print(f"Count of files: {len(files)}")
     print("=" * 80)
     print(f"Search using multiprocessing:")
+    print(f"Number of processers: {min(10, len(files))}")
 
     start_time = time.time()
     result = multiprocessing_search(files, keywords)
